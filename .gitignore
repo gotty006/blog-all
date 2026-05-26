@@ -1,0 +1,20 @@
+# キャッシュ・一時ファイル
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+
+# データ・ログ（大きくなるため除外）
+*/data/result.log
+*/data/postData/
+*/data/reports/
+*/data/scene_schedule.json
+
+# 認証情報（絶対にコミットしない）
+*/config/gcp-auth.json
+*/config/index_service_account.json
+*/_settings_local.py
+
+# Python仮想環境
+venv/
+.venv/

@@ -1,0 +1,8 @@
+config/gcp-auth.json
+config/index_service_account.json
+data/postData/
+data/inputData/
+data/result.log
+__pycache__/
+*.pyc
+.env
