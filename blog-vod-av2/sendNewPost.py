@@ -72,12 +72,15 @@ def generate_service_review(svc):
 無料体験: {trial_str}
 特徴: {features_str}""")
 
+    aff_url = svc.get('affiliate_url') or svc.get('url', '#')
+    cta = f'<p style="text-align:center;margin:20px 0"><a href="{aff_url}" target="_blank" rel="nofollow" style="background:#e60012;color:#fff;padding:12px 28px;border-radius:4px;font-weight:bold;text-decoration:none">▶ {name}を無料で試す</a></p>'
+
     title = f"{name}の評判・口コミ｜料金・特徴・使い方を徹底解説【{datetime.now().year}年版】"
     slug = f"review-{name.lower().replace(' ','').replace('動画','').replace('プレミアム','premium')}"
     content = f"""<h2>{name}とは？</h2>
 <p>月額料金: <strong>{price_str}</strong>　無料体験: <strong>{trial_str}</strong></p>
 <ul>{"".join(f"<li>{f}</li>" for f in svc.get("features", []))}</ul>
-
+{cta}
 <h2>詳細レビュー</h2>
 <p>{body}</p>
 
@@ -86,6 +89,7 @@ def generate_service_review(svc):
 
 <h2>まとめ</h2>
 <p>{name}は{features_str}が特徴のAV動画配信サービスです。{trial_str}を活用して、まずは試してみることをおすすめします。</p>
+{cta}
 """
     wp_post(
         title=title,
@@ -113,11 +117,14 @@ def generate_howto(svc, article_type):
 サービス名: {name}
 記事タイプ: {prompt_label}""")
 
+    aff_url = svc.get('affiliate_url') or svc.get('url', '#')
+    cta = f'<p style="text-align:center;margin:20px 0"><a href="{aff_url}" target="_blank" rel="nofollow" style="background:#e60012;color:#fff;padding:12px 28px;border-radius:4px;font-weight:bold;text-decoration:none">▶ {name}の公式サイトへ</a></p>'
+
     title = f"{name}の{label}を徹底解説【{datetime.now().year}年最新・画像付き】"
     slug = f"howto-{name.lower().replace(' ','').replace('動画','').replace('プレミアム','premium')}-{slug_suffix}"
     content = f"""<h2>{name}の{label}</h2>
 <p>{body}</p>
-
+{cta}
 <h2>まとめ</h2>
 <p>{name}の{label}はシンプルで簡単です。不明点があれば公式サポートへご連絡ください。</p>
 """

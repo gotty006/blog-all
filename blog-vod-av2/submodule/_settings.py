@@ -53,15 +53,15 @@ vod_services = [
     {
         "name": "FANZA動画",
         "url": "https://video.dmm.co.jp/",
-        "affiliate_url": "https://al.dmm.co.jp/?lurl=...",  # アフィリエイトURL
-        "monthly_price": 550,   # 円（税込）
+        "affiliate_url": "https://al.dmm.co.jp/?lurl=https%3A%2F%2Fvideo.dmm.co.jp%2F&af_id=niconavicom-001&ch=link_tool&ch_id=link",
+        "monthly_price": 550,
         "free_trial_days": 0,
         "features": ["最大級の作品数", "ダウンロード対応", "スマホ対応"],
     },
     {
         "name": "DMMプレミアム",
         "url": "https://premium.dmm.com/",
-        "affiliate_url": "",
+        "affiliate_url": "https://al.dmm.co.jp/?lurl=https%3A%2F%2Fpremium.dmm.com%2F&af_id=niconavicom-001&ch=link_tool&ch_id=link",
         "monthly_price": 550,
         "free_trial_days": 30,
         "features": ["月額定額見放題", "18禁含む", "動画ダウンロード"],
@@ -69,15 +69,15 @@ vod_services = [
     {
         "name": "MGS動画",
         "url": "https://www.mgstage.com/",
-        "affiliate_url": "",
-        "monthly_price": 0,  # 都度課金
+        "affiliate_url": "https://al.dmm.co.jp/?lurl=https%3A%2F%2Fwww.mgstage.com%2F&af_id=niconavicom-001&ch=link_tool&ch_id=link",
+        "monthly_price": 0,
         "free_trial_days": 0,
         "features": ["素人系が充実", "無料サンプル豊富"],
     },
     {
         "name": "カリビアンコム",
         "url": "https://www.caribbeancom.com/",
-        "affiliate_url": "",
+        "affiliate_url": "",  # 独自アフィリプログラム・要別途登録
         "monthly_price": 2980,
         "free_trial_days": 0,
         "features": ["高画質", "完全オリジナル作品"],
@@ -85,7 +85,7 @@ vod_services = [
     {
         "name": "一本道",
         "url": "https://www.1pondo.tv/",
-        "affiliate_url": "",
+        "affiliate_url": "",  # 独自アフィリプログラム・要別途登録
         "monthly_price": 2980,
         "free_trial_days": 0,
         "features": ["完全日本製", "高品質"],
