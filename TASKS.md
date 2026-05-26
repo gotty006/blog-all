@@ -1,14 +1,19 @@
 # autoBlog タスク管理
 
-最終更新: 2026-05-26
+最終更新: 2026-05-27
 
 ---
 
 ## 🔥 直近アクション
 
+- [ ] **vod.av2.jp ハウツー記事を実際に投稿**（コード実装済み・未実行）
+  ```
+  cd ~/dev/autoBlog/blog-vod-av2 && python3 sendNewPost.py howto
+  ```
+- [ ] **アフィリエイトURLを本番に差し替え**（blog-vod-av2/submodule/_settings.py の affiliate_url）
 - [ ] **ColorfulBoxでcron設定**（全サイト自動化の最終ステップ）
   ```
-  0 2 * * *  cd ~/dev/autoBlog/blog-scene-av2 && python3 sendNewPost.py all
+  0 2 * * *  cd ~/dev/autoBlog/blog-scene-av2 && python3 sendNewPost.py
   0 2 * * *  cd ~/dev/autoBlog/blog-vod-av2   && python3 sendNewPost.py all
   0 3 * * *  cd ~/dev/autoBlog && python3 _factory/seo_monitor_all.py update
   0 7 * * *  cd ~/dev/autoBlog && python3 _factory/daily_report.py
@@ -23,8 +28,9 @@
 | ステータス | タスク | 優先度 |
 |---|---|---|
 | ✅ 完了 | 初期記事15件投稿（サービスレビュー5件＋比較10件） | - |
-| ✅ 完了 | Google Indexing API 登録（30件） | - |
-| 🔴 未着手 | キーワード記事の追加生成（「FANZAの使い方」「解約方法」「無料体験」系） | 高 |
+| ✅ 完了 | Google Indexing API 登録（15件） | - |
+| ✅ 完了 | ハウツー記事機能実装（登録/解約/無料体験 × 5サービス = 15記事） | - |
+| 🔴 未着手 | ハウツー記事を実際に投稿（`sendNewPost.py howto`） | 高 |
 | 🔴 未着手 | アフィリエイトリンクの本番URLに差し替え（現在はプレースホルダー） | 高 |
 | 🔴 未着手 | cron設定（毎朝2時・自動実行） | 中 |
 | 🟡 後回し | Google Analytics 設置 | 低 |
@@ -50,6 +56,7 @@
 |---|---|---|
 | ✅ 完了 | site_config.py・daily_report.py・seo_monitor_all.py 実装 | - |
 | ✅ 完了 | shared/ モジュール整備 | - |
+| ✅ 完了 | blog-all.git で全サービス統合管理 | - |
 | 🔴 未着手 | daily_report.py → SESSION.md 自動書き込みのcronテスト | 中 |
 | 🟡 後回し | Google Spreadsheet「BLOG_FACTORY」作成（日次stats管理） | 低 |
 
