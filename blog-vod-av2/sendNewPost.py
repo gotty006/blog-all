@@ -98,6 +98,40 @@ def generate_service_review(svc):
     )
 
 
+def generate_howto(svc, article_type):
+    """登録・解約・無料体験 ハウツー記事を生成。article_type: register / cancel / trial"""
+    name = svc['name']
+    type_map = {
+        'register': ('登録方法', '登録手順', 'register'),
+        'cancel':   ('解約方法', '解約手順', 'cancel'),
+        'trial':    ('無料体験のやり方', '無料体験の使い方', 'trial'),
+    }
+    label, prompt_label, slug_suffix = type_map[article_type]
+
+    body = gpt(f"""{_settings.gpt_prompts['howto']}
+
+サービス名: {name}
+記事タイプ: {prompt_label}""")
+
+    title = f"{name}の{label}を徹底解説【{datetime.now().year}年最新・画像付き】"
+    slug = f"howto-{name.lower().replace(' ','').replace('動画','').replace('プレミアム','premium')}-{slug_suffix}"
+    content = f"""<h2>{name}の{label}</h2>
+<p>{body}</p>
+
+<h2>まとめ</h2>
+<p>{name}の{label}はシンプルで簡単です。不明点があれば公式サポートへご連絡ください。</p>
+"""
+    wp_post(
+        title=title,
+        content=content,
+        slug=slug,
+        category='使い方ガイド',
+        tags=[name, label, 'AV動画', 'VOD', '使い方'],
+        seo_title=title,
+        seo_desc=f"{name}の{label}を画像付きでわかりやすく解説。{datetime.now().year}年最新版。",
+    )
+
+
 def generate_comparison(svc_a, svc_b):
     na, nb = svc_a['name'], svc_b['name']
     pa = "無料" if svc_a.get('monthly_price', 0) == 0 else f"{svc_a['monthly_price']}円"
@@ -135,6 +169,13 @@ def generate_comparison(svc_a, svc_b):
 
 
 def run(article_type='all'):
+    """
+    使い方:
+      python3 sendNewPost.py                # all（全タイプ）
+      python3 sendNewPost.py service_review
+      python3 sendNewPost.py comparison
+      python3 sendNewPost.py howto
+    """
     services = _settings.vod_services
     log(f"=== vod.av2.jp 記事生成開始 [{article_type}] ({len(services)}サービス) ===")
 
@@ -152,6 +193,14 @@ def run(article_type='all'):
                     generate_comparison(services[i], services[j])
                 except Exception as e:
                     log(f"ERROR comparison {services[i]['name']} vs {services[j]['name']}: {e}")
+
+    if article_type in ('howto', 'all'):
+        for svc in services:
+            for htype in ('register', 'cancel', 'trial'):
+                try:
+                    generate_howto(svc, htype)
+                except Exception as e:
+                    log(f"ERROR howto {svc['name']} {htype}: {e}")
 
     log("=== 完了 ===")
 
