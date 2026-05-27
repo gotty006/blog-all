@@ -10,9 +10,10 @@ import sys
 import os
 from datetime import datetime
 
+import urllib.parse
 import openai
 from wordpress_xmlrpc import Client, WordPressPost
-from wordpress_xmlrpc.methods.posts import NewPost
+from wordpress_xmlrpc.methods.posts import NewPost, GetPosts, EditPost
 
 sys.path.insert(0, 'submodule')
 from submodule import _settings
@@ -39,23 +40,42 @@ def gpt(prompt):
     return res.choices[0].message.content.strip()
 
 
+def _get_existing_slugs(wp):
+    posts = wp.call(GetPosts({'number': 500, 'post_status': 'any'}))
+    return {urllib.parse.unquote(p.slug): p for p in posts}
+
+
 def wp_post(title, content, slug, category, tags, seo_title, seo_desc):
     if _settings.debug_flag.get('do_not_post'):
         log(f"[DRY RUN] {title}")
         return None
     wp = Client(_settings.wordpress_url, _settings.wordpress_id, _settings.wordpress_pw)
+    existing = _get_existing_slugs(wp)
+
+    if slug in existing:
+        p = existing[slug]
+        p.title   = title
+        p.content = content
+        p.custom_fields = [
+            {'key': 'the_page_seo_title',       'value': seo_title},
+            {'key': 'the_page_meta_description', 'value': seo_desc},
+        ]
+        wp.call(EditPost(p.id, p))
+        log(f"更新: {title} (ID:{p.id})")
+        return p.id
+
     post = WordPressPost()
     post.post_status = 'publish' if _settings.debug_flag.get('direct_post') else 'draft'
-    post.title = title
+    post.title   = title
     post.content = content
-    post.slug = slug
+    post.slug    = slug
     post.terms_names = {'post_tag': tags, 'category': [category]}
     post.custom_fields = [
-        {'key': 'the_page_seo_title', 'value': seo_title},
+        {'key': 'the_page_seo_title',       'value': seo_title},
         {'key': 'the_page_meta_description', 'value': seo_desc},
     ]
     post_id = wp.call(NewPost(post))
-    log(f"投稿完了: {title} (ID:{post_id})")
+    log(f"新規投稿: {title} (ID:{post_id})")
     return post_id
 
 

@@ -13,8 +13,11 @@
 - [ ] **アフィリエイトURLを本番に差し替え**（blog-vod-av2/submodule/_settings.py の affiliate_url）
 - [ ] **ColorfulBoxでcron設定**（全サイト自動化の最終ステップ）
   ```
-  0 2 * * *  cd ~/dev/autoBlog/blog-scene-av2 && python3 sendNewPost.py
-  0 2 * * *  cd ~/dev/autoBlog/blog-vod-av2   && python3 sendNewPost.py all
+  # ※ OPENAI_API_KEY を先頭行で設定すること
+  OPENAI_API_KEY=sk-xxxx
+
+  0 2 * * *  cd ~/dev/autoBlog/blog-scene-av2 && python3 sendNewPost.py        # 毎日15件ローテ
+  0 2 * * 0  cd ~/dev/autoBlog/blog-vod-av2   && python3 sendNewPost.py all    # 週1回（日曜）
   0 3 * * *  cd ~/dev/autoBlog && python3 _factory/seo_monitor_all.py update
   0 7 * * *  cd ~/dev/autoBlog && python3 _factory/daily_report.py
   ```

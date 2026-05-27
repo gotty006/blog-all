@@ -199,6 +199,7 @@ def wp_post(title, content, slug, category, tags, seo_title, seo_desc):
 
     if slug in existing:
         p = existing[slug]
+        p.title   = title
         p.content = content
         p.custom_fields = [
             {'key': 'the_page_seo_title',        'value': seo_title},

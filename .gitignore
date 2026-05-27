@@ -13,6 +13,7 @@ __pycache__/
 # 認証情報（絶対にコミットしない）
 */config/gcp-auth.json
 */config/index_service_account.json
+*/submodule/_settings.py
 */_settings_local.py
 
 # Python仮想環境
