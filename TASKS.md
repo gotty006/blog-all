@@ -1,26 +1,44 @@
 # autoBlog タスク管理
 
-最終更新: 2026-05-27
+最終更新: 2026-05-29
 
 ---
 
-## 🔥 直近アクション
+## 🔥 直近アクション（優先順）
 
-- [ ] **vod.av2.jp ハウツー記事を実際に投稿**（コード実装済み・未実行）
-  ```
-  cd ~/dev/autoBlog/blog-vod-av2 && python3 sendNewPost.py howto
-  ```
-- [ ] **アフィリエイトURLを本番に差し替え**（blog-vod-av2/submodule/_settings.py の affiliate_url）
-- [ ] **ColorfulBoxでcron設定**（全サイト自動化の最終ステップ）
-  ```
-  # ※ OPENAI_API_KEY を先頭行で設定すること
-  OPENAI_API_KEY=sk-xxxx
+### ① 既存サービスのcron設定（ColorfulBox）
+```cron
+OPENAI_API_KEY=sk-xxxx
 
-  0 2 * * *  cd ~/dev/autoBlog/blog-scene-av2 && python3 sendNewPost.py        # 毎日15件ローテ
-  0 2 * * 0  cd ~/dev/autoBlog/blog-vod-av2   && python3 sendNewPost.py all    # 週1回（日曜）
-  0 3 * * *  cd ~/dev/autoBlog && python3 _factory/seo_monitor_all.py update
-  0 7 * * *  cd ~/dev/autoBlog && python3 _factory/daily_report.py
-  ```
+0 2 * * *  cd ~/dev/autoBlog/blog-scene-av2 && python3 sendNewPost.py
+0 2 * * 0  cd ~/dev/autoBlog/blog-vod-av2   && python3 sendNewPost.py all
+0 3 * * *  cd ~/dev/autoBlog && python3 _factory/seo_monitor_all.py update
+0 7 * * *  cd ~/dev/autoBlog && python3 _factory/daily_report.py
+```
+
+### ② vod.av2.jp ハウツー記事を投稿（コード実装済み・未実行）
+```bash
+cd ~/dev/autoBlog/blog-vod-av2 && python3 sendNewPost.py howto
+```
+
+### ③ 新サービス立ち上げ（ColorfulBoxで作業）
+1. 7つのサブドメインを作成 → WordPress インストール
+   - `onsen.niconavi.com`, `hotel.niconavi.com`, `golf.niconavi.com`
+   - `camp.niconavi.com`, `gourmet.niconavi.com`, `movie.niconavi.com`
+   - `parking.niconavi.com`
+2. 各サービスの `submodule/_settings.py` を作成（sampleを参考）
+3. APIキーを取得して設定
+
+### ④ 新サービス起動コマンド（settings完成後）
+```bash
+cd ~/dev/autoBlog/blog-onsen   && python3 sendNewPost.py --all
+cd ~/dev/autoBlog/blog-hotel   && python3 sendNewPost.py --all
+cd ~/dev/autoBlog/blog-golf    && python3 sendNewPost.py --all
+cd ~/dev/autoBlog/blog-camp    && python3 sendNewPost.py --all
+cd ~/dev/autoBlog/blog-gourmet && python3 sendNewPost.py --all
+cd ~/dev/autoBlog/blog-movie   && python3 sendNewPost.py --all
+cd ~/dev/autoBlog/blog-parking && python3 sendNewPost.py
+```
 
 ---
 
@@ -30,56 +48,143 @@
 
 | ステータス | タスク | 優先度 |
 |---|---|---|
-| ✅ 完了 | 初期記事15件投稿（サービスレビュー5件＋比較10件） | - |
-| ✅ 完了 | Google Indexing API 登録（15件） | - |
-| ✅ 完了 | ハウツー記事機能実装（登録/解約/無料体験 × 5サービス = 15記事） | - |
+| ✅ 完了 | 初期記事15件投稿 | - |
+| ✅ 完了 | ハウツー記事機能実装（登録/解約/無料体験 × 5サービス） | - |
+| ✅ 完了 | 重複投稿防止ロジック | - |
 | 🔴 未着手 | ハウツー記事を実際に投稿（`sendNewPost.py howto`） | 高 |
-| 🔴 未着手 | アフィリエイトリンクの本番URLに差し替え（現在はプレースホルダー） | 高 |
-| 🔴 未着手 | cron設定（毎朝2時・自動実行） | 中 |
-| 🟡 後回し | Google Analytics 設置 | 低 |
-| 🟡 後回し | AdSense 申請 | 低 |
+| 🔴 未着手 | アフィリエイトリンクの本番URLに差し替え | 高 |
+| 🔴 未着手 | cron設定（毎週日曜2時） | 中 |
 
 ### scene.av2.jp（シーン特化ランキング）
 
 | ステータス | タスク | 優先度 |
 |---|---|---|
-| ✅ 完了 | 初期記事15件投稿（全シーン） | - |
-| ✅ 完了 | Google Indexing API 登録（15件） | - |
-| ✅ 完了 | 重複投稿防止ロジック実装 | - |
-| ✅ 完了 | 50シーンに拡張・優先度スケジューラー実装 | - |
-| ✅ 完了 | 日替わりFANZAソート（新着/人気/評価/注目）実装 | - |
-| 🔴 未着手 | cron設定（毎朝2時・自動実行） | 高 |
-| 🔴 未着手 | サムネイル画像のWordPressへのアップロード対応 | 中 |
-| 🟡 後回し | Google Analytics 設置 | 低 |
-| 🟡 後回し | AdSense 申請 | 低 |
+| ✅ 完了 | 初期記事15件投稿 | - |
+| ✅ 完了 | 50シーン拡張・優先度スケジューラー | - |
+| ✅ 完了 | 日替わりFANZAソート実装 | - |
+| ✅ 完了 | サムネイル自動設定 | - |
+| 🔴 未着手 | cron設定（毎日2時） | 高 |
+
+### blog-onsen（温泉ランキング）
+
+| ステータス | タスク | 優先度 |
+|---|---|---|
+| ✅ 完了 | sendNewPost.py 実装（20ターゲット・楽天API） | - |
+| 🔴 未着手 | ColorfulBoxでWPサイト作成（onsen.niconavi.com） | 高 |
+| 🔴 未着手 | 楽天RWSアプリID取得 → _settings.py作成 | 高 |
+| 🔴 未着手 | 初期記事投稿（`--all`） | 中 |
+| 🔴 未着手 | cron設定 | 低 |
+
+### blog-hotel（ホテルランキング）
+
+| ステータス | タスク | 優先度 |
+|---|---|---|
+| ✅ 完了 | sendNewPost.py 実装（20ターゲット・楽天API） | - |
+| 🔴 未着手 | ColorfulBoxでWPサイト作成（hotel.niconavi.com） | 高 |
+| 🔴 未着手 | 楽天RWSアプリID取得 → _settings.py作成 | 高 |
+| 🔴 未着手 | 初期記事投稿（`--all`） | 中 |
+| 🔴 未着手 | cron設定 | 低 |
+
+### blog-golf（ゴルフ場ランキング）
+
+| ステータス | タスク | 優先度 |
+|---|---|---|
+| ✅ 完了 | sendNewPost.py 実装（15ターゲット・楽天GORA API） | - |
+| 🔴 未着手 | ColorfulBoxでWPサイト作成（golf.niconavi.com） | 高 |
+| 🔴 未着手 | 楽天RWSアプリID取得 → _settings.py作成 | 高 |
+| 🔴 未着手 | 初期記事投稿（`--all`） | 中 |
+| 🔴 未着手 | cron設定 | 低 |
+
+### blog-camp（キャンプ場ランキング）
+
+| ステータス | タスク | 優先度 |
+|---|---|---|
+| ✅ 完了 | sendNewPost.py 実装（15ターゲット・楽天Travel API） | - |
+| 🔴 未着手 | ColorfulBoxでWPサイト作成（camp.niconavi.com） | 高 |
+| 🔴 未着手 | 楽天RWSアプリID取得 → _settings.py作成 | 高 |
+| 🔴 未着手 | 初期記事投稿（`--all`） | 中 |
+| 🔴 未着手 | cron設定 | 低 |
+
+### blog-gourmet（グルメランキング）
+
+| ステータス | タスク | 優先度 |
+|---|---|---|
+| ✅ 完了 | sendNewPost.py 実装（15ターゲット・Hotpepper API） | - |
+| 🔴 未着手 | ColorfulBoxでWPサイト作成（gourmet.niconavi.com） | 高 |
+| 🔴 未着手 | Hotpepper APIキー取得 → _settings.py作成 | 高 |
+| 🔴 未着手 | 初期記事投稿（`--all`） | 中 |
+| 🔴 未着手 | cron設定 | 低 |
+
+### blog-movie（映画ランキング）
+
+| ステータス | タスク | 優先度 |
+|---|---|---|
+| ✅ 完了 | sendNewPost.py 実装（15ターゲット・TMDB API） | - |
+| 🔴 未着手 | ColorfulBoxでWPサイト作成（movie.niconavi.com） | 高 |
+| 🔴 未着手 | TMDB APIキー取得（無料・要登録）→ _settings.py作成 | 高 |
+| 🔴 未着手 | 初期記事投稿（`--all`） | 中 |
+| 🔴 未着手 | cron設定 | 低 |
+
+### blog-parking（駐車場ランキング）
+
+| ステータス | タスク | 優先度 |
+|---|---|---|
+| ✅ 完了 | sendNewPost.py 移植（aiBlogから） | - |
+| 🔴 未着手 | ColorfulBoxでWPサイト作成（parking.niconavi.com） | 高 |
+| 🔴 未着手 | _settings.py作成（spread_sheet_key等を設定） | 高 |
+| 🔴 未着手 | wordpress_urlをparking.niconavi.comに変更 | 高 |
+| 🔴 未着手 | 初期記事投稿 | 中 |
 
 ### _factory（共通基盤）
 
 | ステータス | タスク | 優先度 |
 |---|---|---|
-| ✅ 完了 | site_config.py・daily_report.py・seo_monitor_all.py 実装 | - |
-| ✅ 完了 | shared/ モジュール整備 | - |
+| ✅ 完了 | site_config.py に全9サービス登録 | - |
+| ✅ 完了 | daily_report.py・seo_monitor_all.py 実装 | - |
 | ✅ 完了 | blog-all.git で全サービス統合管理 | - |
-| 🔴 未着手 | daily_report.py → SESSION.md 自動書き込みのcronテスト | 中 |
-| 🟡 後回し | Google Spreadsheet「BLOG_FACTORY」作成（日次stats管理） | 低 |
+| 🔴 未着手 | 新サービスをactive:True に切り替え（WP作成後） | 高 |
+| 🔴 未着手 | daily_report.py cronテスト | 中 |
 
 ---
 
-## 🚀 新サービス候補（追加検討）
+## 🔑 APIキー取得先
 
-| ジャンル | URL候補 | 優先度 | メモ |
+| サービス | API | URL | 対象 |
 |---|---|---|---|
-| 温泉旅館ランキング | onsen.av2.jp 等 | 中 | 楽天/一休アフィリエイト・SEO競合低め |
-| キャンプ場ランキング | camp.niconavi.com 等 | 低 | ファミリー層・季節変動あり |
-| AV名作レビュー（blog-av-new） | TBD | 低 | ドメイン未取得 |
-
-新サービスを追加する場合は Claude Code に「新サービス: [ジャンル名]」と指示。
+| 楽天RWS | アプリID | https://webservice.rakuten.co.jp/ | onsen/hotel/golf/camp |
+| Hotpepper | APIキー | https://webservice.recruit.co.jp/ | gourmet |
+| TMDB | APIキー（無料） | https://www.themoviedb.org/settings/api | movie |
 
 ---
 
-## 📝 運用ルール
+## 🚀 cron全サービス設定（最終形）
 
-- 記事は重複チェック後に**上書き更新**（同じシーンを毎日最新FANZAデータで更新）
-- FANZA affiliate_id: `niconavicom-999`（APIリクエスト用）
-- WordPress 認証: `niconavi.com@gmail.com`
-- cron が動き出したら毎朝7時に `_factory/daily_report.py` が SESSION.md を更新
+```cron
+OPENAI_API_KEY=sk-xxxx
+
+# 既存AV系
+0 2 * * *  cd ~/dev/autoBlog/blog-scene-av2 && python3 sendNewPost.py
+0 2 * * 0  cd ~/dev/autoBlog/blog-vod-av2   && python3 sendNewPost.py all
+
+# 新サービス（毎日15件ローテ）
+0 3 * * *  cd ~/dev/autoBlog/blog-onsen   && python3 sendNewPost.py
+0 3 * * *  cd ~/dev/autoBlog/blog-hotel   && python3 sendNewPost.py
+0 4 * * *  cd ~/dev/autoBlog/blog-golf    && python3 sendNewPost.py
+0 4 * * *  cd ~/dev/autoBlog/blog-camp    && python3 sendNewPost.py
+0 5 * * *  cd ~/dev/autoBlog/blog-gourmet && python3 sendNewPost.py
+0 5 * * *  cd ~/dev/autoBlog/blog-movie   && python3 sendNewPost.py
+
+# 共通
+0 6 * * *  cd ~/dev/autoBlog && python3 _factory/seo_monitor_all.py update
+0 7 * * *  cd ~/dev/autoBlog && python3 _factory/daily_report.py
+```
+
+---
+
+## 📝 運用メモ
+
+- 記事は重複チェック後に上書き更新（同テーマを毎月最新データで更新）
+- WordPress認証: `niconavi.com@gmail.com`
+- FANZA affiliate_id: `niconavicom-999`（API用）、`niconavicom-001`（リンク用）
+- 楽天アフィリエイトID: 要設定（affiliate tag）
+- colorfulbox で日本レンタル → サブドメイン追加 → WordPress一発インストール
